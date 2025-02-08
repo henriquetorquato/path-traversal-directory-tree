@@ -14,8 +14,9 @@ jobs:
       matrix:
         include:
           - target: x86_64-pc-windows-gnu
+            name: path-traversal-directory-tree.exe
           - target: x86_64-unknown-linux-musl
-          - target: x86_64-apple-darwin
+            name: path-traversal-directory-tree.sh
 
     steps:
       - uses: actions/checkout@master
@@ -25,11 +26,12 @@ jobs:
         with:
           RUSTTARGET: ${{ matrix.target }}
           UPLOAD_MODE: none
+          STATIC_LINKING: false
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.target }}
+          name: ${{ matrix.name }}.
           path: |
             ${{ steps.compile.outputs.BUILT_ARCHIVE }}
             ${{ steps.compile.outputs.BUILT_CHECKSUM }}
